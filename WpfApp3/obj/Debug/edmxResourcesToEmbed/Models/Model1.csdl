@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="Mnogo_ko_mnogimEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Order" EntityType="Model.Order" />
+    <EntitySet Name="OrderProduct" EntityType="Model.OrderProduct" />
+    <EntitySet Name="Product" EntityType="Model.Product" />
+    <EntitySet Name="sysdiagrams" EntityType="Model.sysdiagrams" />
+    <EntitySet Name="TypeofDelivery" EntityType="Model.TypeofDelivery" />
+    <EntitySet Name="TypeofPayment" EntityType="Model.TypeofPayment" />
+    <EntitySet Name="TypeofProduct" EntityType="Model.TypeofProduct" />
+    <AssociationSet Name="FK_Order_TypeofDelivery" Association="Model.FK_Order_TypeofDelivery">
+      <End Role="TypeofDelivery" EntitySet="TypeofDelivery" />
+      <End Role="Order" EntitySet="Order" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Order_TypeofPayment" Association="Model.FK_Order_TypeofPayment">
+      <End Role="TypeofPayment" EntitySet="TypeofPayment" />
+      <End Role="Order" EntitySet="Order" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OrderProduct_Order" Association="Model.FK_OrderProduct_Order">
+      <End Role="Order" EntitySet="Order" />
+      <End Role="OrderProduct" EntitySet="OrderProduct" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OrderProduct_Product" Association="Model.FK_OrderProduct_Product">
+      <End Role="Product" EntitySet="Product" />
+      <End Role="OrderProduct" EntitySet="OrderProduct" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Product_TypeofProduct" Association="Model.FK_Product_TypeofProduct">
+      <End Role="TypeofProduct" EntitySet="TypeofProduct" />
+      <End Role="Product" EntitySet="Product" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Order">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Price" Type="Double" />
+    <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TypeofPaymentid" Type="Int32" Nullable="false" />
+    <Property Name="TypeofDeliveryid" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="TypeofDelivery" Relationship="Model.FK_Order_TypeofDelivery" FromRole="Order" ToRole="TypeofDelivery" />
+    <NavigationProperty Name="TypeofPayment" Relationship="Model.FK_Order_TypeofPayment" FromRole="Order" ToRole="TypeofPayment" />
+    <NavigationProperty Name="OrderProduct" Relationship="Model.FK_OrderProduct_Order" FromRole="Order" ToRole="OrderProduct" />
+  </EntityType>
+  <EntityType Name="OrderProduct">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Productid" Type="Int32" Nullable="false" />
+    <Property Name="Orderid" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Order" Relationship="Model.FK_OrderProduct_Order" FromRole="OrderProduct" ToRole="Order" />
+    <NavigationProperty Name="Product" Relationship="Model.FK_OrderProduct_Product" FromRole="OrderProduct" ToRole="Product" />
+  </EntityType>
+  <EntityType Name="Product">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Price" Type="Double" />
+    <Property Name="TypeofProductid" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="OrderProduct" Relationship="Model.FK_OrderProduct_Product" FromRole="Product" ToRole="OrderProduct" />
+    <NavigationProperty Name="TypeofProduct" Relationship="Model.FK_Product_TypeofProduct" FromRole="Product" ToRole="TypeofProduct" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="TypeofDelivery">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Order" Relationship="Model.FK_Order_TypeofDelivery" FromRole="TypeofDelivery" ToRole="Order" />
+  </EntityType>
+  <EntityType Name="TypeofPayment">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Order" Relationship="Model.FK_Order_TypeofPayment" FromRole="TypeofPayment" ToRole="Order" />
+  </EntityType>
+  <EntityType Name="TypeofProduct">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Product" Relationship="Model.FK_Product_TypeofProduct" FromRole="TypeofProduct" ToRole="Product" />
+  </EntityType>
+  <Association Name="FK_Order_TypeofDelivery">
+    <End Type="Model.TypeofDelivery" Role="TypeofDelivery" Multiplicity="1" />
+    <End Type="Model.Order" Role="Order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TypeofDelivery">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Order">
+        <PropertyRef Name="TypeofDeliveryid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Order_TypeofPayment">
+    <End Type="Model.TypeofPayment" Role="TypeofPayment" Multiplicity="1" />
+    <End Type="Model.Order" Role="Order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TypeofPayment">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Order">
+        <PropertyRef Name="TypeofPaymentid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OrderProduct_Order">
+    <End Type="Model.Order" Role="Order" Multiplicity="1" />
+    <End Type="Model.OrderProduct" Role="OrderProduct" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Order">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="OrderProduct">
+        <PropertyRef Name="Orderid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OrderProduct_Product">
+    <End Type="Model.Product" Role="Product" Multiplicity="1" />
+    <End Type="Model.OrderProduct" Role="OrderProduct" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="OrderProduct">
+        <PropertyRef Name="Productid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Product_TypeofProduct">
+    <End Type="Model.TypeofProduct" Role="TypeofProduct" Multiplicity="1" />
+    <End Type="Model.Product" Role="Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TypeofProduct">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Product">
+        <PropertyRef Name="TypeofProductid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
